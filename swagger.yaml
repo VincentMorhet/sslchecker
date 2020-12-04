@@ -1,0 +1,74 @@
+swagger: '2.0'
+info:
+  description: This is a simple API
+  version: 1.0.0
+  title: SSL Client Checker
+  # put the contact info for your development or API team
+  contact:
+    email: vincent.morhet@vmds.fr
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+# tags are used for organizing operations
+tags:
+- name: admins
+  description: Secured Admin-only calls
+- name: developers
+  description: Operations available to regular developers
+
+paths:
+  /sslcheck:
+    get:
+      tags:
+      - developers
+      summary: searches inventory
+      operationId: searchInventory
+      description: |
+        By passing in the appropriate options, you can search for
+        available inventory in the system
+      produces:
+      - application/json
+
+      responses:
+        200:
+          description: search results matching criteria
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ssl_client_cert'
+        400:
+          description: bad input parameter
+definitions:
+  ssl_client_cert:
+    type: object
+    required:
+    - serial
+    - cn
+    - nom
+    - prenom
+    - datefin
+    properties:
+      serial:
+        type: string
+        pattern: ^([1-9ABCDEF]*)$
+        example: 6EFA327CDAAC0998
+      cn:
+        type: string
+        example: JEAN DUPONT 0123456
+      prenom:
+        type: string
+        example: JEAN
+      nom:
+        type: string
+        example: DUPONT
+      datefin:
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /VincentMorhet/sslcheck/1.0.0
+schemes:
+ - https
